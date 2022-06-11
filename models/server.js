@@ -1,33 +1,33 @@
-const express = require("express");
-const cors = require("cors");
-const { socketController } = require("../sockets/controller");
+const express = require('express')
+const cors = require('cors')
+const { socketController } = require('../sockets/controller')
 
 class Server {
   constructor() {
-    this.app = express();
-    this.port = process.env.PORT;
-    this.server = require("http").createServer(this.app); //Este es el server que se crea con socket.io
-    this.io = require("socket.io")(this.server);
+    this.app = express()
+    this.port = process.env.PORT
+    this.server = require('http').createServer(this.app) // Este es el server que se crea con socket.io. this.app es el server que se crea con express
+    this.io = require('socket.io')(this.server) // this.io es la instancia de socket.io que se crea con el server creado con socket.io
 
     //Paths
-    this.paths = {};
+    this.paths = {}
 
     //Middlewares
-    this.middlewares();
+    this.middlewares()
 
     //Rutas de la aplicación
-    this.routes();
+    this.routes()
 
     //Sockets
-    this.sockets();
+    this.sockets()
   }
 
   middlewares() {
     // CORS
-    this.app.use(cors());
+    this.app.use(cors())
 
     // Directorio público
-    this.app.use(express.static("public"));
+    this.app.use(express.static('public'))
   }
 
   routes() {
@@ -36,15 +36,15 @@ class Server {
   }
 
   sockets() {
-    this.io.on("connection", socketController);
+    this.io.on('connection', socketController)
   }
 
   listen() {
     //Se levanta el server creado con socket.io
     this.server.listen(this.port, () => {
-      console.log("Servidor ejecutándose en puerto", this.port);
-    });
+      console.log('Servidor ejecutándose en puerto', this.port)
+    })
   }
 }
 
-module.exports = Server;
+module.exports = Server
